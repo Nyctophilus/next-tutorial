@@ -1,19 +1,28 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req, res) {
-  let { username, password, email } = await req.json();
+  const { username, email, age } = await req.json();
 
-  console.log(username, password, email);
+  console.log({ username, email, age });
 
-  if (!username || !password || !email)
+  if (!username || !email || !age)
     return NextResponse.json(
       {
-        error: "required field not found!",
+        message: "one of the required fields is missing!",
+        ok: false,
       },
-      { status: 400 }
+      {
+        status: 400,
+      }
     );
 
-  return NextResponse.json({
-    res: "data sent successfully",
-  });
+  return NextResponse.json(
+    {
+      message: "data received successfully!",
+      ok: true,
+    },
+    {
+      status: 201,
+    }
+  );
 }
