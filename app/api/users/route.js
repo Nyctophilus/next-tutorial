@@ -2,92 +2,44 @@ import { users } from "@/app/util/db";
 import { NextResponse } from "next/server";
 import fs from "fs";
 
-// 1. get all user
-export function GET() {
+// get all users
+export async function GET(req, res) {
   const data = users;
 
-  return NextResponse.json(
-    {
-      data,
-    },
-    {
-      status: 200,
-    }
-  );
+  return NextResponse.json({ data }, { status: 200 });
 }
 
-// 4. create user
+// create user
 export async function POST(req, res) {
-  const { id, name, password, email } = await req.json();
-  if (!id || !name || !password || !email) {
+  const { id, name, email, password } = await req.json();
+
+  if (!id || !name || !password || !email)
     return NextResponse.json(
-      {
-        message: "Please fill out the required fields.",
-      },
-      {
-        status: 404,
-      }
+      { error: "some required fields are missing!" },
+      { status: 401 }
     );
-  } else {
-    // check duplicate ID
-    if (users.find((user) => user.id === parseInt(id))) {
-      return NextResponse.json(
-        {
-          message: `User with ID ${id} already exists.`,
-        },
-        {
-          status: 503,
-        }
-      );
-    } else {
-      const newUser = {
-        id: parseInt(id),
-        name,
-        password,
-        email,
-      };
-      users.push(newUser);
 
-      const updatedArray = users;
-      const updatedData = JSON.stringify(
-        updatedArray,
-        null,
-        2
-      );
-      fs.writeFileSync(
-        "./app/util/db.js",
-        `export const users = ${updatedData}`,
-        "utf-8"
-      );
-
-      return NextResponse.json(
-        { message: "user created successfully!" },
-        { status: 201 }
-      );
-    }
-  }
-}
-
-// 5. Update user
-export async function PUT(req, res) {
-  let { id, name, password, email } = await req.json();
-
-  const userIndex = users.findIndex(
-    (u) => parseInt(u.id) === parseInt(id)
+  const idIndex = users.findIndex((u) => u.id === id);
+  const nameIndex = users.findIndex((u) => u.name === name);
+  const emailIndex = users.findIndex(
+    (u) => u.email === email
   );
-
-  if (userIndex === -1)
+  if (
+    idIndex !== -1 ||
+    nameIndex !== -1 ||
+    emailIndex !== -1
+  )
     return NextResponse.json(
-      { error: "User not found" },
-      { status: 404 }
+      {
+        error: `user with id:${id} ,or name: ${name} or email: ${email} already signed up`,
+      },
+      { status: 501 }
     );
 
-  if (name) users[userIndex].name = name;
-  if (password) users[userIndex].password = password;
-  if (email) users[userIndex].email = email;
+  users.push({ id, name, email, password });
+  const updatedDB = users;
+  const updatedData = JSON.stringify(updatedDB, null, 2);
 
-  const updatedArray = users;
-  const updatedData = JSON.stringify(updatedArray, null, 2);
   fs.writeFileSync(
     "./app/util/db.js",
     `export const users = ${updatedData}`,
@@ -95,9 +47,37 @@ export async function PUT(req, res) {
   );
 
   return NextResponse.json(
-    { sucess: "user info updated successfully!" },
     {
-      status: 200,
-    }
+      success: `user with name:${name} has been created successfully!`,
+    },
+    { status: 201 }
+  );
+}
+
+// update user
+export async function PUT(req, res) {
+  const { id, name, email, password } = await req.json();
+
+  const uIndex = users.findIndex((u) => u.id == id);
+
+  if (uIndex === -1)
+    return NextResponse.json(
+      { error: "user not found" },
+      { status: 404 }
+    );
+
+  users[uIndex].name = name;
+  users[uIndex].password = password;
+  users[uIndex].email = email;
+
+  const updatedData = JSON.stringify(users, null, 2);
+  fs.writeFileSync(
+    "./app/util/db.js",
+    `export const users = ${updatedData}`,
+    "utf-8"
+  );
+  return NextResponse.json(
+    { success: "user updated the info successfully!" },
+    { status: 200 }
   );
 }

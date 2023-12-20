@@ -7,13 +7,6 @@ export const users = [
     "password": "alexmerson12"
   },
   {
-    "id": "2",
-    "name": "Quagmire",
-    "age": 25,
-    "email": "quagmire@gmail.com",
-    "password": "quagmire123"
-  },
-  {
     "id": "3",
     "name": "Jordan",
     "age": 21,
@@ -36,12 +29,12 @@ export const users = [
     "id": 8,
     "name": "Muhammed",
     "password": "mo12345x",
-    "email": "mu@gmail.com"
+    "email": "muxmailxcom"
   },
   {
     "id": 22,
     "name": "Muhammed Fayad",
-    "password": "Mo22@Next.jsGoddness!",
+    "password": "Mo22@Next.jsGoddness",
     "email": "Mo@gmail.com"
   }
 ]
