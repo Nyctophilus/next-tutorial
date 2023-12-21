@@ -4,7 +4,7 @@ export const users = [
     "name": "Muhammed Fayad",
     "age": 28,
     "email": "Mo@gmail.com",
-    "password": "alexmerson12"
+    "password": "mo22@ahlyXZ"
   },
   {
     "id": "3",
@@ -36,5 +36,30 @@ export const users = [
     "name": "Muhammed Fayad",
     "password": "Mo22@Next.jsGoddness",
     "email": "Mo@gmail.com"
+  },
+  {
+    "id": "312xz",
+    "name": "asd",
+    "email": "mcs@gmasil.csasd",
+    "password": "akxcaksd"
+  },
+  {
+    "id": "meo2",
+    "name": "Lana Ahmed",
+    "email": "lana@gmail.com",
+    "password": "askcnasjkcnk"
+  },
+  {
+    "id": "zx2",
+    "name": "karim",
+    "email": "axmc@vs.cs",
+    "password": "a,cma,cmas,cm"
+  },
+  {
+    "id": "22",
+    "name": "ac",
+    "email": "acas@gma.cas",
+    "password": "acacsac",
+    "age": "25"
   }
 ]

@@ -9,12 +9,17 @@ export async function GET(req, res) {
   const userIndex = users.findIndex((u) => u.id == id);
   if (userIndex === -1)
     return NextResponse.json(
-      { error: `user with ID ${id} Not Found!!!` },
+      {
+        error: `user with ID ${id} Not Found!!!`,
+        ok: false,
+      },
       { status: 404 }
     );
 
   return NextResponse.json(
-    { success: `user with ID ${id} has been found!` },
+    {
+      user: users[userIndex],
+    },
     { status: 200 }
   );
 }

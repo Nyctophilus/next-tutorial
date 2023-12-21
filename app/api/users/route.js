@@ -11,7 +11,8 @@ export async function GET(req, res) {
 
 // create user
 export async function POST(req, res) {
-  const { id, name, email, password } = await req.json();
+  const { id, name, email, password, age } =
+    await req.json();
 
   if (!id || !name || !password || !email)
     return NextResponse.json(
@@ -31,12 +32,15 @@ export async function POST(req, res) {
   )
     return NextResponse.json(
       {
-        error: `user with id:${id} ,or name: ${name} or email: ${email} already signed up`,
+        error: `error`,
       },
-      { status: 501 }
+      {
+        status: 501,
+        statusText: `user with id:${id} ,or name: ${name} or email: ${email} already signed up`,
+      }
     );
 
-  users.push({ id, name, email, password });
+  users.push({ id, name, email, password, age });
   const updatedDB = users;
   const updatedData = JSON.stringify(updatedDB, null, 2);
 
@@ -66,9 +70,12 @@ export async function PUT(req, res) {
       { status: 404 }
     );
 
-  users[uIndex].name = name;
-  users[uIndex].password = password;
-  users[uIndex].email = email;
+  users[uIndex] = {
+    ...users[uIndex],
+    name: name || users[uIndex].name,
+    email: email || users[uIndex].email,
+    password: password ? password : users[uIndex].password,
+  };
 
   const updatedData = JSON.stringify(users, null, 2);
   fs.writeFileSync(
