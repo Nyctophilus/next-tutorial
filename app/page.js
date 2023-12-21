@@ -7,9 +7,9 @@ export default function Home() {
 
       <Link
         className=" bg-transparent hover:bg-pink-500 text-pink-700 font-semibold hover:text-white px-4 border border-pink-500 hover:border-transparent rounded"
-        href={"/about"}
+        href={"users"}
       >
-        About
+        manage users
       </Link>
     </main>
   );
