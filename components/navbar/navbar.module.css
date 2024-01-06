@@ -1,0 +1,19 @@
+.active {
+  background-color: aliceblue;
+  color: black;
+}
+
+.mobLinks {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 50%;
+  height: calc(100dvh - 70px);
+  background-color: rgb(112, 35, 122);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  animation: height 0.5s linear;
+}
