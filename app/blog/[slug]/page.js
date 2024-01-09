@@ -1,29 +1,50 @@
 import styles from "./singlePost.module.css";
 import Image from "next/image";
 import PostUser from "@/components/postUser/postUser";
-import { Suspense } from "react";
+import { getPost } from "@/lib/data";
 
-const SinglePostPage = async ({ params }) => {
-  const { slug } = params;
-  console.log(slug);
+// const getSinglePost = async (slug) => {
+//   const res = await fetch(
+//     `https://jsonplaceholder.typicode.com/posts/${slug}`,
+//     {
+//       next: { revalidate: 3600 },
+//     }
+//   );
+
+//   if (!res.ok) throw new Error("Could not find post");
+
+//   return res.json();
+// };
+
+export const generateMetadata = async ({ params: { slug } }) => {
+  const { title, desc } = await getPost(slug);
+
+  return {
+    title: `Blog | ${title}`,
+    description: desc,
+  };
+};
+
+const SinglePostPage = async ({ params: { slug } }) => {
+  const { title, desc, img, userId, createdAt } = await getPost(slug);
 
   return (
     <div className={`${styles.container} container`}>
       <div className={styles.imgContainer}>
-        <Image src={"/hero.gif"} alt="" fill className={styles.img} />
+        {img && <Image src={img} alt={title} fill className={styles.img} />}
       </div>
       <div className={styles.textContainer}>
-        <h1 className={styles.title}>Title</h1>
+        <h1 className={styles.title}>{title}</h1>
         <div className={styles.detail}>
-          {/* <Suspense fallback={<div>Loading...</div>}>
-            <PostUser userId={1} />
-          </Suspense> */}
+          <PostUser userId={userId} />
           <div className={styles.detailText}>
             <span className={styles.detailTitle}>Published</span>
-            <span className={styles.detailValue}>22.11.2024</span>
+            <span className={styles.detailValue}>
+              {createdAt.toString().slice(4, 16)}
+            </span>
           </div>
         </div>
-        <div className={styles.content}>Desc</div>
+        <div className={styles.content}>{desc}</div>
       </div>
     </div>
   );
