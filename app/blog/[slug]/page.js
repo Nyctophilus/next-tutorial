@@ -2,19 +2,18 @@ import styles from "./singlePost.module.css";
 import Image from "next/image";
 import PostUser from "@/components/postUser/postUser";
 import { getPost } from "@/lib/data";
+import Delete from "./delete";
 
-// const getSinglePost = async (slug) => {
-//   const res = await fetch(
-//     `https://jsonplaceholder.typicode.com/posts/${slug}`,
-//     {
-//       next: { revalidate: 3600 },
-//     }
-//   );
+// fetch with API
+const getSinglePost = async (slug) => {
+  const res = await fetch(`http://localhost:3000/api/blog/${slug}`, {
+    next: { revalidate: 3600 },
+  });
 
-//   if (!res.ok) throw new Error("Could not find post");
+  if (!res.ok) throw new Error("Could not find post");
 
-//   return res.json();
-// };
+  return res.json();
+};
 
 export const generateMetadata = async ({ params: { slug } }) => {
   const { title, desc } = await getPost(slug);
@@ -26,7 +25,11 @@ export const generateMetadata = async ({ params: { slug } }) => {
 };
 
 const SinglePostPage = async ({ params: { slug } }) => {
-  const { title, desc, img, userId, createdAt } = await getPost(slug);
+  // server actions without API
+  //   const { title, desc, img, userId, createdAt } = await getPost(slug);
+
+  // fetch with API
+  const { title, desc, img, userId, createdAt } = await getSinglePost(slug);
 
   return (
     <div className={`${styles.container} container`}>
@@ -45,6 +48,8 @@ const SinglePostPage = async ({ params: { slug } }) => {
           </div>
         </div>
         <div className={styles.content}>{desc}</div>
+
+        <Delete slug={slug} />
       </div>
     </div>
   );
