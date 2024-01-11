@@ -3,6 +3,7 @@
 import { useState } from "react";
 import NavLink from "./navLink";
 import styles from "./navbar.module.css";
+import { handleLogout } from "@/lib/actions";
 
 const links = [
   {
@@ -23,29 +24,31 @@ const links = [
   },
 ];
 
-const session = true;
-const isAdmin = true;
-
-const Links = () => {
+const Links = ({ session }) => {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <div className="hidden lg:block">
+      <div className="hidden lg:flex items-center">
         {links.map(({ name, path }) => (
           <NavLink key={name} name={name} path={path} />
         ))}
 
-        {session ? (
+        {session?.user ? (
           <>
-            {isAdmin && <NavLink name="admin" path="/admin" />}
-            <button>logout</button>
+            {session.user?.isAdmin && <NavLink name="admin" path="/admin" />}
+            <form action={handleLogout}>
+              <button className="px-4 py-1">logout</button>
+            </form>
           </>
         ) : (
           <NavLink name="login" path="/login" />
         )}
       </div>
 
-      <button onClick={() => setOpen((prev) => !prev)} className="px-4 py-2 rounded-2xl text-white lg:hidden">
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="px-4 py-2 rounded-2xl text-white lg:hidden"
+      >
         Menu
       </button>
 
