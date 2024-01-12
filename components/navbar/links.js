@@ -37,7 +37,7 @@ const Links = ({ session }) => {
           <>
             {session.user?.isAdmin && <NavLink name="admin" path="/admin" />}
             <form action={handleLogout}>
-              <button className="px-4 py-1">logout</button>
+              <button className="active px-4 py-1">logout</button>
             </form>
           </>
         ) : (
