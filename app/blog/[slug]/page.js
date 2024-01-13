@@ -2,7 +2,6 @@ import styles from "./singlePost.module.css";
 import Image from "next/image";
 import PostUser from "@/components/postUser/postUser";
 import { getPost } from "@/lib/data";
-import Delete from "./delete";
 
 // fetch with API
 const getSinglePost = async (slug) => {
@@ -49,7 +48,6 @@ const SinglePostPage = async ({ params: { slug } }) => {
         </div>
         <div className={styles.content}>{desc}</div>
 
-        <Delete slug={slug} />
       </div>
     </div>
   );
